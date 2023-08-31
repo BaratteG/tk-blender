@@ -89,7 +89,7 @@ def on_scene_event_callback(*args, **kwargs):
     """
     Callback that's run whenever a scene is saved or opened.
     """
-    from sgtk.platform.qt import QtGui
+    from PySide2 import QtGui
 
     try:
         refresh_engine()
@@ -236,15 +236,15 @@ class BlenderEngine(Engine):
         Displays a dialog with the message according to  the severity level
         specified.
         """
-        from sgtk.platform.qt import QtGui, QtCore
+        from PySide2 import QtGui, QtCore, QtWidgets
 
         level_icon = {
-            "info": QtGui.QMessageBox.Information,
-            "error": QtGui.QMessageBox.Critical,
-            "warning": QtGui.QMessageBox.Warning,
+            "info": QtWidgets.QMessageBox.Information,
+            "error": QtWidgets.QMessageBox.Critical,
+            "warning": QtWidgets.QMessageBox.Warning,
         }
 
-        dlg = QtGui.QMessageBox()
+        dlg = QtWidgets.QMessageBox()
         dlg.setIcon(level_icon[level])
         dlg.setText(msg)
         dlg.setWindowTitle(ENGINE_NICE_NAME)
@@ -449,9 +449,9 @@ class BlenderEngine(Engine):
         """
         Ensure the QApplication is initialized
         """
-        from sgtk.platform.qt import QtGui
+        from PySide2 import QtGui, QtWidgets
 
-        self._qt_app = QtGui.QApplication.instance()
+        self._qt_app = QtWidgets.QApplication.instance()
         self._qt_app.setWindowIcon(QtGui.QIcon(self.icon_256))
         self._qt_app.setQuitOnLastWindowClosed(False)
         self._qt_app.setQuitOnLastWindowClosed(False)
@@ -459,7 +459,7 @@ class BlenderEngine(Engine):
         if self._qt_app_main_window is None:
             self.log_debug("Initializing main QApplication...")
 
-            self._qt_app_main_window = QtGui.QMainWindow()
+            self._qt_app_main_window = QtWidgets.QMainWindow()
 
             # parent the main window under the Blender main window
             if is_windows():
@@ -469,7 +469,7 @@ class BlenderEngine(Engine):
                 if hwnd:
                     self._qt_app_main_window.create(hwnd)
 
-            self._qt_app_central_widget = QtGui.QWidget()
+            self._qt_app_central_widget = QtWidgets.QWidget()
             self._qt_app_main_window.setCentralWidget(self._qt_app_central_widget)
 
         # set up the dark style
@@ -503,7 +503,7 @@ class BlenderEngine(Engine):
 
         # let's close the windows created by the engine before exiting the
         # application
-        from sgtk.platform.qt import QtGui
+        from PySide2 import QtGui
 
         app = QtGui.QApplication.instance()
         app.aboutToQuit.connect(self.destroy_engine)
